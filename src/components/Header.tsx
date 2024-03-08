@@ -31,6 +31,7 @@ const HeaderContainer = styled.header`
   top: 0;
   padding: 0 7%;
   width: 100%;
+  max-width: 1000px;
   display: flex;
   justify-content: center;
 `;
@@ -38,7 +39,6 @@ const HeaderContainer = styled.header`
 const NavContainer = styled.nav`
   color: ${(props) => props.theme.colors.main};
   width: 100%;
-  max-width: 1000px;
   ul {
     list-style-type: none;
     display: flex;
