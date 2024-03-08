@@ -3,6 +3,7 @@ import Header from "./components/Header";
 import GlobalStyle from "./global.ts";
 import styled, { ThemeProvider } from "styled-components";
 import { useAppSelector } from "./store/index.ts";
+import HomePage from "./pages/HomePage.tsx";
 
 const App: React.FC = () => {
   const theme = useAppSelector((state) => state.theme);
@@ -11,6 +12,9 @@ const App: React.FC = () => {
       <GlobalStyle />
       <AppContainer>
         <Header />
+        <PageContainer>
+          <HomePage />
+        </PageContainer>
       </AppContainer>
     </ThemeProvider>
   );
@@ -24,7 +28,7 @@ const AppContainer = styled.div`
   background-color: ${(props) => props.theme.colors.secondary};
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  /* justify-content: center; */
   align-items: center;
 
   &::before {
@@ -49,5 +53,20 @@ const AppContainer = styled.div`
     z-index: 10;
     background-size: 100% 2px, 3px 100%;
     pointer-events: none;
+  }
+`;
+
+const PageContainer = styled.div`
+  width: 100%;
+  max-width: 1000px;
+  padding: 5% 7%;
+  color: ${(props) => props.theme.colors.main};
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid ${(props) => props.theme.colors.main};
+  justify-content: start;
+
+  &:first-of-type {
+    min-height: 95vh;
   }
 `;
