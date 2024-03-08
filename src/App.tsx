@@ -22,6 +22,10 @@ const AppContainer = styled.div`
   width: 100%;
   height: 100vh;
   background-color: ${(props) => props.theme.colors.secondary};
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
   &::before {
     content: " ";
