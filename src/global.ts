@@ -6,7 +6,7 @@ export default createGlobalStyle`
         padding: 0;
         outline: 0;
         box-sizing: border-box;
-        font-family: "Source Code Pro", monospace;
+        font-family: monospace;
         font-size: 24px
     }
     #root {

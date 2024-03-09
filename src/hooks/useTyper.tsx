@@ -1,128 +1,142 @@
 import { useEffect, useRef, useState } from "react";
+import { useAppSelector } from "../store";
+import { flushSync } from "react-dom";
+
+type TypoStatus =
+  | "none"
+  | "firstTyped"
+  | "secondTyped"
+  | "firstDeleted"
+  | "secondDeleted";
 
 const randomLetter = () => {
   const letters = "abcdefgaweqwrcschijklmn;opiop-i k.l,mqrstuvwxyz";
   return letters[Math.floor(Math.random() * letters.length)];
 };
 
+const typeWord = (
+  output: string[],
+  word: string,
+  wordIndex: number,
+  cursor: number
+): string[] => {
+  const newOutput = [...output];
+  if (!newOutput[wordIndex]) {
+    newOutput[wordIndex] = word[cursor];
+  } else {
+    newOutput[wordIndex] += word[cursor];
+  }
+  return newOutput;
+};
+
+const typeDelete = (output: string[], wordIndex: number): string[] => {
+  const newOuput = [...output];
+  const len = output[wordIndex].length;
+  newOuput[wordIndex] = output[wordIndex].substring(0, len - 1);
+  return newOuput;
+};
+
+// const normalType = (current)
 const useTypeWord = (words: string[]): string[] => {
-  const [output, setOutput] = useState<string[]>(
-    new Array(words.length).fill("")
-  );
-  const [blink, setBlink] = useState(true); // State to control blinking
-  const cursor = useRef(0);
-  const inTypo = useRef(false);
-  const startType = useRef(false);
-  const wordIndex = useRef(0);
+  const [output, setOutput] = useState<string[]>([]);
+  const typeDelay = useAppSelector((state) => state.setting.typeDelay);
+  const blinks = useRef<number>(4); // State to control blinking
+  const cursor = useRef<number>(0);
+  const wordIndex = useRef<number>(0);
+  const typoStatus = useRef<TypoStatus>("none");
+  const typeInterval = useRef<NodeJS.Timeout | null>(null);
+  const lastDelay = useRef<number>(0);
+  console.log(typeDelay);
   useEffect(() => {
     // Function to handle typing
-    const delay = 100;
     const type = async () => {
-      const timeout = (ms: number) =>
-        new Promise((resolve) => setTimeout(resolve, ms));
-
-      // Check if cursor is within input length
-      if (wordIndex.current < words.length) {
-        const currentWord = words[wordIndex.current];
-        if (cursor.current <= currentWord.length) {
-          // Simulate typo with a 7% chance
-          const typoChance = Math.random();
-          if (!inTypo.current && typoChance < 0.05) {
-            const typo1 =
-              cursor.current > 0 && Math.random() < 0.5
-                ? currentWord[cursor.current - 1]
-                : randomLetter();
-            const typo2 = randomLetter();
-            setOutput((prev) => [...prev]);
-            inTypo.current = true;
-
-            setOutput((prev) => {
-              const newOuput = [...prev];
-              newOuput[wordIndex.current] = prev[wordIndex.current] + typo1;
-              return newOuput;
-            });
-            await timeout(delay);
-            setOutput((prev) => {
-              const newOuput = [...prev];
-              newOuput[wordIndex.current] = prev[wordIndex.current] + typo2;
-              return newOuput;
-            });
-            await timeout(delay / 2);
-            setOutput((prev) => {
-              const newOuput = [...prev];
-              newOuput[wordIndex.current] = prev[wordIndex.current].substring(
-                0,
-                prev[wordIndex.current].length - 1
-              );
-              return newOuput;
-            });
-            await timeout(delay / 2);
-            setOutput((prev) => {
-              const newOuput = [...prev];
-              newOuput[wordIndex.current] = prev[wordIndex.current].substring(
-                0,
-                prev[wordIndex.current].length - 1
-              );
-              return newOuput;
-            });
-            inTypo.current = false;
+      // cursor blink first
+      if (blinks.current > 0) {
+        setOutput((prev) => {
+          // _ is showing
+          if (prev[0] === "_") {
+            blinks.current--;
+            // make sure _ is removed before typing
+            return [""];
+          } else {
+            return ["_"];
           }
-
-          // Check if not in typo state
-          if (!inTypo.current) {
-            if (cursor.current === currentWord.length) {
-              cursor.current = 0;
-              wordIndex.current++;
-            } else {
-              setOutput((prev) => {
-                const newOuput = [...prev];
-                console.log(wordIndex.current);
-                newOuput[wordIndex.current] =
-                  prev[wordIndex.current] +
-                  words[wordIndex.current][cursor.current++];
-                return newOuput;
-              });
-            }
-          }
+        });
+        return;
+      }
+      // all words typed
+      if (wordIndex.current === words.length) {
+        clearInterval(typeInterval.current || undefined);
+        return;
+      }
+      // check if cursor is within input length
+      const currentWord = words[wordIndex.current];
+      if (cursor.current >= currentWord.length) {
+        wordIndex.current++;
+        cursor.current = 0;
+        return;
+      }
+      const typoChance = Math.random();
+      // if typo occured, we add another typo or fix one
+      if (typoStatus.current !== "none") {
+        switch (typoStatus.current) {
+          case "firstTyped":
+            flushSync(() =>
+              setOutput((prev) =>
+                typeWord(prev, randomLetter(), wordIndex.current, 0)
+              )
+            );
+            typoStatus.current = "secondTyped";
+            break;
+          case "secondTyped":
+            flushSync(() =>
+              setOutput((prev) => typeDelete(prev, wordIndex.current))
+            );
+            typoStatus.current = "secondDeleted";
+            break;
+          case "secondDeleted":
+            flushSync(() =>
+              setOutput((prev) => typeDelete(prev, wordIndex.current))
+            );
+            typoStatus.current = "none";
+            break;
         }
+        return;
+      }
+
+      // do not make typo on the last type
+      if (cursor.current === currentWord.length - 1 || typoChance > 0.05) {
+        // normal typing
+        flushSync(() =>
+          setOutput((prev) =>
+            typeWord(prev, currentWord, wordIndex.current, cursor.current)
+          )
+        );
+        cursor.current++;
+      } else {
+        // typo typing
+        typoStatus.current = "firstTyped";
+        const typo = randomLetter();
+        flushSync(() =>
+          setOutput((prev) => typeWord(prev, typo, wordIndex.current, 0))
+        );
       }
     };
 
-    // Start blinking effect before typing
-    const blinkInterval = setInterval(() => {
-      setBlink((prev) => !prev);
-    }, 500);
-
-    // Start typing after blinking multiple times
-    const typeTimeout = setTimeout(() => {
-      startType.current = true;
-    }, 2000); // Blinking duration is 500 ms * 5 = 2500 ms
-
-    // Start typing animation
-    const intervalId = setInterval(async () => {
-      if (startType.current) {
+    // tart typing animation
+    // triggered due to a type delay update
+    if (typeDelay !== lastDelay.current) {
+      clearInterval(typeInterval.current || undefined);
+      typeInterval.current = setInterval(async () => {
         await type();
-      }
-    }, delay);
-
+      }, typeDelay);
+      lastDelay.current = typeDelay;
+    }
     // Cleanup intervals when component unmounts
     return () => {
-      clearInterval(blinkInterval);
-      clearInterval(intervalId);
-      clearTimeout(typeTimeout);
+      clearInterval(typeInterval.current || undefined);
     };
-  }, [words]);
-  if (!startType.current) {
-    return blink ? ["_"] : [""];
-  }
-  const complete =
-    wordIndex.current === words.length - 1 &&
-    cursor.current === words[wordIndex.current].length - 1;
-  if (!complete) {
-    const res = [...output];
-    res[wordIndex.current] += "_";
-    return res;
-  }
+  }, [typeDelay, words]);
   return output;
 };
 

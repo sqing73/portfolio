@@ -1,5 +1,5 @@
 import ThemeButton from "./ThemeButton";
-import { CommonStoryDecorator, store } from "./CommonDecorator";
+import { CommonStoryDecorator, store } from "../stories/CommonDecorator";
 import { expect, fireEvent, within } from "@storybook/test";
 import type { Meta } from "@storybook/react";
 

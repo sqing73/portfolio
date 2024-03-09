@@ -1,20 +1,48 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Header from "./components/Header";
 import GlobalStyle from "./global.ts";
 import styled, { ThemeProvider } from "styled-components";
 import { useAppSelector } from "./store/index.ts";
 import HomePage from "./pages/HomePage.tsx";
+import { useAppDispatch } from "./store/index.ts";
+import {
+  typeSpeedSlowed,
+  typeSpeedAccelecrated,
+} from "./store/settingSlice.ts";
 
 const App: React.FC = () => {
   const theme = useAppSelector((state) => state.theme);
+  const dispatch = useAppDispatch();
+  console.log("app");
+
+  useEffect(() => {
+    let holdTimer: NodeJS.Timeout;
+    const handleMouseDown = () => {
+      holdTimer = setTimeout(() => {
+        dispatch(typeSpeedAccelecrated());
+      }, 500);
+    };
+
+    const handleMouseUp = () => {
+      dispatch(typeSpeedSlowed());
+      clearTimeout(holdTimer);
+    };
+
+    document.addEventListener("mousedown", handleMouseDown);
+    document.addEventListener("mouseup", handleMouseUp);
+
+    return () => {
+      document.removeEventListener("mousedown", handleMouseDown);
+      document.removeEventListener("mouseup", handleMouseDown);
+    };
+  }, [dispatch]);
+  console.log(4444);
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyle />
       <AppContainer>
         <Header />
-        <PageContainer>
-          <HomePage />
-        </PageContainer>
+        <HomePage />
       </AppContainer>
     </ThemeProvider>
   );
@@ -53,20 +81,5 @@ const AppContainer = styled.div`
     z-index: 10;
     background-size: 100% 2px, 3px 100%;
     pointer-events: none;
-  }
-`;
-
-const PageContainer = styled.div`
-  width: 100%;
-  max-width: 1000px;
-  padding: 5% 7%;
-  color: ${(props) => props.theme.colors.main};
-  display: flex;
-  flex-direction: column;
-  border-bottom: 1px solid ${(props) => props.theme.colors.main};
-  justify-content: start;
-
-  &:first-of-type {
-    min-height: 95vh;
   }
 `;
