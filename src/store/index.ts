@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 import themeReducer from "./themeSlice";
+import settingReducer from "./settingSlice";
 
 const store = configureStore({
   reducer: {
     theme: themeReducer,
+    setting: settingReducer,
   },
 });
 
@@ -21,5 +23,6 @@ export const createStore = () =>
   configureStore({
     reducer: {
       theme: themeReducer,
+      setting: settingReducer,
     },
   });

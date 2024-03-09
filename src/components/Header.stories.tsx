@@ -1,5 +1,5 @@
 import Header from "./Header";
-import { CommonStoryDecorator } from "./CommonDecorator";
+import { CommonStoryDecorator } from "../stories/CommonDecorator";
 import { expect, fireEvent, within } from "@storybook/test";
 import type { Meta } from "@storybook/react";
 
