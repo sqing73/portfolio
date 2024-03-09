@@ -46,7 +46,7 @@ const useTypeWord = (words: string[]): string[] => {
   const typoStatus = useRef<TypoStatus>("none");
   const typeInterval = useRef<NodeJS.Timeout | null>(null);
   const lastDelay = useRef<number>(0);
-  console.log(typeDelay);
+
   useEffect(() => {
     // Function to handle typing
     const type = async () => {
@@ -103,9 +103,12 @@ const useTypeWord = (words: string[]): string[] => {
         }
         return;
       }
-
-      // do not make typo on the last type
-      if (cursor.current === currentWord.length - 1 || typoChance > 0.05) {
+      // do not make typo on the last type or accelerated
+      if (
+        typeDelay === 20 ||
+        cursor.current === currentWord.length - 1 ||
+        typoChance > 0.05
+      ) {
         // normal typing
         flushSync(() =>
           setOutput((prev) =>
