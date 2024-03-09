@@ -13,30 +13,35 @@ import {
 const App: React.FC = () => {
   const theme = useAppSelector((state) => state.theme);
   const dispatch = useAppDispatch();
-  console.log("app");
 
   useEffect(() => {
     let holdTimer: NodeJS.Timeout;
-    const handleMouseDown = () => {
+    const handleAccelerate = () => {
       holdTimer = setTimeout(() => {
         dispatch(typeSpeedAccelecrated());
       }, 500);
     };
 
-    const handleMouseUp = () => {
+    const handleSlowDown = () => {
       dispatch(typeSpeedSlowed());
       clearTimeout(holdTimer);
     };
 
-    document.addEventListener("mousedown", handleMouseDown);
-    document.addEventListener("mouseup", handleMouseUp);
+    document.addEventListener("mousedown", handleAccelerate);
+    document.addEventListener("mouseup", handleSlowDown);
+    document.addEventListener("touchstart", handleAccelerate);
+    document.addEventListener("touchend", handleSlowDown);
+    document.addEventListener("touchcancel", handleSlowDown);
 
     return () => {
-      document.removeEventListener("mousedown", handleMouseDown);
-      document.removeEventListener("mouseup", handleMouseDown);
+      document.removeEventListener("mousedown", handleAccelerate);
+      document.removeEventListener("mouseup", handleSlowDown);
+      document.removeEventListener("touchstart", handleAccelerate);
+      document.removeEventListener("touchend", handleSlowDown);
+      document.removeEventListener("touchcancel", handleSlowDown);
     };
   }, [dispatch]);
-  console.log(4444);
+
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyle />
