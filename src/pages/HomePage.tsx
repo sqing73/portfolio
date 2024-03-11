@@ -19,7 +19,7 @@ const HomePage = () => {
       <StyledTitle>{lastname}</StyledTitle>
       <StyledComment>{comment}</StyledComment>
       <StyledParagraph>{intro}</StyledParagraph>
-      <Paragraph>{introSkills}</Paragraph>
+      <DoubleLineParagraph>{introSkills}</DoubleLineParagraph>
       <BottomParagraph>more below</BottomParagraph>
     </PageContainer>
   );
@@ -28,15 +28,19 @@ const HomePage = () => {
 export default HomePage;
 
 const StyledTitle = styled(Title)`
-  padding-bottom: 2rem;
+  padding-bottom: 4%;
 `;
 
 const StyledComment = styled(Comment)`
-  padding-bottom: 2rem;
+  padding-bottom: 4%;
 `;
 
 const StyledParagraph = styled(Paragraph)`
-  padding-bottom: 2rem;
+  padding-bottom: 4%;
+`;
+
+const DoubleLineParagraph = styled(StyledParagraph)`
+  min-height: 3rem;
 `;
 
 const BottomParagraph = styled(Paragraph)`

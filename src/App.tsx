@@ -4,6 +4,7 @@ import GlobalStyle from "./global.ts";
 import styled, { ThemeProvider } from "styled-components";
 import { useAppSelector } from "./store/index.ts";
 import HomePage from "./pages/HomePage.tsx";
+import StackPage from "./pages/StackPage.tsx";
 import { useAppDispatch } from "./store/index.ts";
 import {
   typeSpeedSlowed,
@@ -48,6 +49,8 @@ const App: React.FC = () => {
       <AppContainer>
         <Header />
         <HomePage />
+        <StackPage />
+        {/* TODO:adjust space for stackpage */}
       </AppContainer>
     </ThemeProvider>
   );
@@ -57,11 +60,10 @@ export default App;
 
 const AppContainer = styled.div`
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   background-color: ${(props) => props.theme.colors.secondary};
   display: flex;
   flex-direction: column;
-  /* justify-content: center; */
   align-items: center;
 
   &::before {
