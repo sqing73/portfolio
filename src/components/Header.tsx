@@ -34,6 +34,8 @@ const HeaderContainer = styled.header`
   max-width: 1000px;
   display: flex;
   justify-content: center;
+  opacity: 0.9;
+  background-color: ${(props) => props.theme.colors.secondary};
 `;
 
 const NavContainer = styled.nav`
