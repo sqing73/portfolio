@@ -9,8 +9,8 @@ interface Props {
   onRenderComplete: () => void;
 }
 
-const WorkPageContent: React.FC<Props> = ({ onRenderComplete }) => {
-  const [title, command] = useTypeWord(words);
+const StackPageContent: React.FC<Props> = ({ onRenderComplete }) => {
+  const [title, command] = useTypeWord(words, true);
   useEffect(() => {
     const wordsLength = words.reduce((acc, e) => acc + e.length, 0);
     const renderedLength = (title?.length || 0) + (command?.length || 0);
@@ -26,7 +26,7 @@ const WorkPageContent: React.FC<Props> = ({ onRenderComplete }) => {
   );
 };
 
-export default WorkPageContent;
+export default StackPageContent;
 
 const StyledTitle = styled(Title)`
   padding-bottom: 4%;

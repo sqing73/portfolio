@@ -12,7 +12,10 @@ const words = [
 ];
 
 const HomePage = () => {
-  const [welcome, lastname, comment, intro, introSkills] = useTypeWord(words);
+  const [welcome, lastname, comment, intro, introSkills] = useTypeWord(
+    words,
+    true
+  );
   return (
     <PageContainer>
       <Title>{welcome}</Title>

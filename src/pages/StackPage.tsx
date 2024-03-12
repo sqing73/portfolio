@@ -1,5 +1,5 @@
 import { PageContainer } from "../components/UI";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Content from "../components/StackPageContent";
 import SkillTree from "../components/SkillTree";
 import useShouldRender from "../hooks/useShouldRender";
@@ -41,10 +41,9 @@ const WorksPage = () => {
     await new Promise((resolve) => setTimeout(resolve, 500));
     setContentRendered(true);
   };
-  useEffect;
 
   return (
-    <PageContainer ref={ref}>
+    <StyledPageContainer ref={ref}>
       <ContentContainer>
         {shouldRenderContent && (
           <Content onRenderComplete={handleContentRendered} />
@@ -66,11 +65,15 @@ const WorksPage = () => {
           />
         </>
       )}
-    </PageContainer>
+    </StyledPageContainer>
   );
 };
 
 export default WorksPage;
+
+const StyledPageContainer = styled(PageContainer)`
+  min-height: 211vh;
+`;
 
 const ContentContainer = styled.div`
   height: 7rem;

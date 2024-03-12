@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const PageContainer = styled.div`
+export const PageContainer = styled.section`
   width: 100%;
   max-width: 1000px;
   padding: 5% 7%;
