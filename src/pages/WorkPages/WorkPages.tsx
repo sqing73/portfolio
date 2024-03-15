@@ -2,6 +2,7 @@ import styled from "styled-components";
 import WorkPage from "./WorkPage";
 import MeetingIcon from "../../assets/meeting.png";
 import SelfIcon from "../../assets/self.png";
+import InventoryIcon from "../../assets/inventory-14472.svg";
 
 const communityWords = [
   "Financial Literacy Hub",
@@ -15,11 +16,18 @@ const portfolioWords = [
   "//React, CSS",
 ];
 
+const productWords = [
+  "Inventory System",
+  "Product and category management module for sellers in a large ecommerce website",
+  "//React, CSS, GraphQL",
+];
+
 const WorkPages = () => {
   return (
     <PagesContainer>
       <WorkPage words={communityWords} image={MeetingIcon} />
-      <WorkPage words={portfolioWords} image={SelfIcon} reverse={true} />
+      <WorkPage words={productWords} image={InventoryIcon} reverse={true} />
+      <WorkPage words={portfolioWords} image={SelfIcon} />
     </PagesContainer>
   );
 };
@@ -29,7 +37,6 @@ export default WorkPages;
 const PagesContainer = styled.div`
   width: 100%;
   max-width: 1000px;
-  height: 260vh;
 
   & > :nth-child(odd) {
     text-align: right;

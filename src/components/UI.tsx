@@ -31,3 +31,7 @@ export const Paragraph = styled.p`
 export const Comment = styled(Paragraph)`
   color: ${(props) => props.theme.colors.comment};
 `;
+
+export const HighLight = styled.span`
+  color: ${(props) => props.theme.colors.highlight};
+`;
