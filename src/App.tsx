@@ -11,6 +11,7 @@ import {
   typeSpeedSlowed,
   typeSpeedAccelecrated,
 } from "./store/settingSlice.ts";
+import ContactPage from "./pages/ContactPage.tsx";
 
 const App: React.FC = () => {
   const theme = useAppSelector((state) => state.theme);
@@ -52,6 +53,7 @@ const App: React.FC = () => {
         <HomePage />
         <StackPage />
         <WorkPages />
+        <ContactPage />
       </AppContainer>
     </ThemeProvider>
   );
@@ -61,7 +63,7 @@ export default App;
 
 const AppContainer = styled.div`
   width: 100%;
-  min-height: 1000vh;
+  /* min-height: 1000vh; */
   background-color: ${(props) => props.theme.colors.secondary};
   display: flex;
   flex-direction: column;
