@@ -37,7 +37,7 @@ const typeDelete = (output: string[], wordIndex: number): string[] => {
 };
 
 // const normalType = (current)
-const useTypeWord = (words: string[], typo: boolean): string[] => {
+const useTypeWord = (words: string[], typo: boolean = true): string[] => {
   const [output, setOutput] = useState<string[]>([]);
   const typeDelay = useAppSelector((state) => state.setting.typeDelay);
   const blinks = useRef<number>(4); // State to control blinking
@@ -107,7 +107,7 @@ const useTypeWord = (words: string[], typo: boolean): string[] => {
       if (
         typeDelay === 20 ||
         cursor.current === currentWord.length - 1 ||
-        typoChance > 0.05 ||
+        typoChance > 0.02 ||
         !typo
       ) {
         // normal typing

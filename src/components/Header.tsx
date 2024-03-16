@@ -1,5 +1,6 @@
 import ThemeButton from "./ThemeButton";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   return (
@@ -7,13 +8,13 @@ const Header = () => {
       <NavContainer>
         <ul>
           <li>
-            <LinkContainer href="">home</LinkContainer>
+            <LinkContainer to="/">home</LinkContainer>
           </li>
           <li>
-            <LinkContainer href="">works</LinkContainer>
+            <LinkContainer to="/about">about me</LinkContainer>
           </li>
           <li>
-            <LinkContainer href="">about me</LinkContainer>
+            <LinkContainer to="/blog">blog</LinkContainer>
           </li>
           <li>
             <ThemeButton />
@@ -67,7 +68,7 @@ const NavContainer = styled.nav`
   }
 `;
 
-const LinkContainer = styled.a`
+const LinkContainer = styled(Link)`
   color: inherit;
   text-decoration: none;
   font-size: 0.6rem;
