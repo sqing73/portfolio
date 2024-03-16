@@ -140,7 +140,7 @@ const useTypeWord = (words: string[], typo: boolean = true): string[] => {
     return () => {
       clearInterval(typeInterval.current || undefined);
     };
-  }, [typeDelay, words]);
+  }, [typeDelay, typo, words]);
   return output;
 };
 
