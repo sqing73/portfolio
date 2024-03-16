@@ -2,14 +2,17 @@ import { Provider as ReduxProvider } from "react-redux";
 import { FC, ReactNode } from "react";
 import { createStore, useAppSelector } from "../store";
 import { ThemeProvider } from "styled-components";
+import { BrowserRouter as Router } from "react-router-dom";
 
 export const store = createStore();
 
 export const CommonStoryDecorator = (Component: FC) => (
   <ReduxProvider store={store}>
-    <ThemeAwareDecorator>
-      <Component />
-    </ThemeAwareDecorator>
+    <Router>
+      <ThemeAwareDecorator>
+        <Component />
+      </ThemeAwareDecorator>
+    </Router>
   </ReduxProvider>
 );
 
