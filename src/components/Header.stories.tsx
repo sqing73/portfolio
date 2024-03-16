@@ -29,7 +29,7 @@ const meta: Meta<typeof Header> = {
     const items = canvas.getAllByRole("listitem");
     expect(items.length).toBe(4);
     items.pop();
-    const navItems = ["home", "works", "about me"];
+    const navItems = ["home", "about me", "blog"];
     items.forEach((element, idx) => {
       expect(element.innerText).toBe(navItems[idx].toUpperCase());
     });
