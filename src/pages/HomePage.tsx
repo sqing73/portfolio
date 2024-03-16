@@ -6,7 +6,7 @@ import { PageContainer } from "../components/UI";
 const words = [
   "Welcome, I'm Shan",
   "Qing",
-  "//click anywhere to make me type faster...",
+  "//click and hold anywhere to make me type faster...",
   "I'm a full-stack developer 🚀.",
   "I use React, Express, Golang and Java Spring to build some cool stuff.",
 ];
